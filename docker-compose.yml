@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Serviço da Aplicação (Laravel + Nginx + PHP-FPM)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: semarh-app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/http.d/default.conf
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+    networks:
+      - semarh-network
+
+  # Serviço do Banco de Dados (PostgreSQL + PostGIS)
+  db:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: semarh-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - semarh-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - semarh-network
+
+  # Serviço do Redis (Cache e Filas)
+  redis:
+    image: redis:7-alpine
+    container_name: semarh-redis
+    restart: unless-stopped
+    networks:
+      - semarh-network
+
+  # Serviço do Worker (Laravel Horizon)
+  worker:
+    image: semarh-desktop:latest # Usa a imagem construída pelo serviço 'app'
+    container_name: semarh-worker
+    restart: unless-stopped
+    command: php artisan horizon
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - app
+      - redis
+    networks:
+      - semarh-network
+
+networks:
+  semarh-network:
+    driver: bridge
+
+volumes:
+  semarh-db-data:
+    driver: local
