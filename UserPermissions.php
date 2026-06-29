@@ -2,41 +2,43 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\User;
 use Livewire\Component;
 
 class UserPermissions extends Component
 {
-    public $user;
+    public User $user;
     public $allPermissions = [];
     public $userPermissions = [];
 
     public function mount($userId)
     {
-        // Placeholder: Carrega o usuário e suas permissões do banco de dados.
-        $allUsers = collect([
-            ['id' => 1, 'name' => 'Márcio Rodrigues', 'role' => 'Administrador', 'permissions' => ['*']],
-            ['id' => 2, 'name' => 'Carlos Ferreira', 'role' => 'Analista', 'permissions' => ['processes.view', 'processes.edit', 'complaints.view']],
-            ['id' => 3, 'name' => 'Ana Souza', 'role' => 'Analista', 'permissions' => ['processes.view', 'processes.edit']],
-            ['id' => 4, 'name' => 'Agente Fiscal 001', 'role' => 'Agente Fiscal', 'permissions' => ['inspections.view', 'inspections.create', 'complaints.view']],
-            ['id' => 5, 'name' => 'Agente Fiscal 002', 'role' => 'Agente Fiscal', 'permissions' => ['inspections.view']],
-        ]);
-        $this->user = $allUsers->firstWhere('id', (int) $userId);
-
-        // Se o usuário for admin, marca todas as permissões e desabilita a edição.
-        if (in_array('*', $this->user['permissions'])) {
-            $this->userPermissions = array_keys(config('permissions.map'));
-        } else {
-            $this->userPermissions = $this->user['permissions'];
-        }
+        // Carrega o usuário do banco de dados. O método findOrFail irá
+        // gerar um erro 404 se o usuário não for encontrado.
+        $this->user = User::findOrFail($userId);
 
         // Carrega todas as permissões do sistema, agrupadas por módulo.
+        // Presume-se que exista um arquivo de configuração para isso.
         $this->allPermissions = config('permissions.map');
+
+        // Verifica se o usuário tem uma role de super-administrador.
+        // Esta é uma abordagem comum com pacotes como spatie/laravel-permission.
+        // Se for admin, preenchemos todas as permissões.
+        if ($this->user->hasRole('Administrador')) {
+            $this->userPermissions = array_keys(config('permissions.map'));
+        } else {
+            // Caso contrário, carrega as permissões diretas do usuário.
+            // O método getPermissionNames() é fornecido pelo pacote spatie/laravel-permission.
+            $this->userPermissions = $this->user->getPermissionNames()->toArray();
+        }
     }
 
     public function submit()
     {
-        // Placeholder: Lógica para salvar as permissões no banco de dados.
-        // Ex: $this->user->syncPermissions($this->userPermissions);
+        // Sincroniza as permissões selecionadas com o usuário no banco de dados.
+        // O método syncPermissions é uma forma segura de atualizar, adicionando
+        // e removendo permissões conforme necessário.
+        $this->user->syncPermissions($this->userPermissions);
 
         session()->flash('message', 'Permissões do usuário atualizadas com sucesso!');
         return $this->redirect(route('admin.users.index'));

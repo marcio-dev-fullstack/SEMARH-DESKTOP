@@ -1,585 +1,100 @@
-# 🌎 SEMARH Fiscaliza 1.0
+# 🌳 SEMARH Fiscaliza 1.0
 
-<div align="center">
+![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=for-the-badge&logo=php)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
+![Livewire](https://img.shields.io/badge/Livewire-3.x-4E56A6?style=for-the-badge&logo=livewire)
 
-## Sistema Inteligente de Gestão Ambiental, Licenciamento, Fiscalização e Geointeligência
-
-![Version](https://img.shields.io/badge/version-1.0-green)
-![Laravel](https://img.shields.io/badge/Laravel-12-red)
-![PHP](https://img.shields.io/badge/PHP-8.3-blue)
-![PostGIS](https://img.shields.io/badge/PostGIS-Spatial-success)
-![License](https://img.shields.io/badge/license-Proprietary-orange)
-
-</div>
+O **SEMARH Fiscaliza** é um sistema integrado e moderno para gestão e fiscalização ambiental, projetado para secretarias municipais de meio ambiente. Ele digitaliza e otimiza processos, desde o licenciamento até a fiscalização em campo, utilizando tecnologias de ponta para garantir eficiência, transparência e segurança.
 
 ---
 
-# 📖 Sobre o Projeto
+## ✨ Funcionalidades Principais
 
-O **SEMARH Fiscaliza 1.0** é uma plataforma completa de transformação digital para Secretarias Municipais de Meio Ambiente, desenvolvida para integrar em um único ambiente:
-
-* Licenciamento Ambiental
-* Fiscalização Ambiental
-* Gestão de Processos Administrativos
-* Geoprocessamento
-* Inteligência Artificial
-* Business Intelligence
-* Gestão Documental
-* Monitoramento Territorial
-* Portal do Cidadão
-* Assinatura Digital
-
-O sistema elimina completamente a dependência de processos físicos, proporcionando rastreabilidade, transparência, eficiência operacional e segurança jurídica para todos os atos administrativos ambientais.
+- **Licenciamento Ambiental Digital:** Fluxo completo para Licenças Prévias (LP), de Instalação (LI) e de Operação (LO).
+- **Fiscalização Inteligente:** Aplicativo mobile para agentes em campo com operação offline, geolocalização e geração de autos digitais.
+- **Portal do Cidadão:** Permite que cidadãos e empresas solicitem licenças, acompanhem processos e registrem denúncias.
+- **Assistentes de IA:** Módulos de Inteligência Artificial (`IA Analista`, `IA Fiscal`, `IA Jurídica`) para apoiar na tomada de decisão.
+- **Business Intelligence (BI):** Dashboards interativos para gestores monitorarem indicadores ambientais e de desempenho (ESG).
+- **Geoprocessamento:** Integração com camadas de mapas (MapBiomas, INPE) e um GeoServer para análise espacial.
+- **Segurança e Auditoria:** Uso de Blockchain para registrar um histórico imutável das principais ações do sistema, garantindo a integridade dos dados.
 
 ---
 
-# 🎯 Missão
+## 🛠️ Arquitetura e Tecnologia
 
-Modernizar a gestão ambiental pública através da tecnologia, promovendo eficiência administrativa, sustentabilidade, transparência e conformidade legal.
+O sistema é construído sobre uma stack de tecnologia robusta e escalável, pensada para alta performance e manutenibilidade.
 
----
+**Tecnologias Utilizadas:**
 
-# 🚀 Visão
+- **Backend:** Laravel 12 (PHP 8.3)
+- **Frontend:** Blade, Livewire 3 e Alpine.js
+- **Banco de Dados:** PostgreSQL 16 com extensão PostGIS
+- **Filas e Cache:** Redis
+- **Servidor GIS:** GeoServer
+- **Containerização:** Docker e Docker Compose
 
-Tornar-se a principal plataforma de gestão ambiental governamental da América Latina, servindo como referência para municípios, estados e órgãos ambientais.
+### Diagramas da Arquitetura
 
----
+Para uma visão aprofundada da arquitetura, fluxos de dados e modelo de banco de dados, consulte nosso documento de diagramas. Eles foram criados com o modelo C4 e Mermaid.
 
-# 🏆 Diferenciais Estratégicos
-
-## ✔ Licenciamento Ambiental 100% Digital
-
-* Licença Prévia (LP)
-* Licença de Instalação (LI)
-* Licença de Operação (LO)
-* Licença Simplificada
-* Renovação de Licenças
-* Condicionantes Ambientais
-* Controle de Vencimentos
+➡️ **Acessar Diagramas da Arquitetura**
 
 ---
 
-## ✔ Fiscalização Inteligente
+## 🚀 Começando
 
-* Registro de denúncias
-* Autos de infração digitais
-* Embargos
-* Interdições
-* Apreensões
-* Termos de compromisso
-* Controle de reincidência
+A maneira mais rápida e recomendada de configurar o ambiente de desenvolvimento é utilizando **Docker**, que garante um ambiente padronizado e isolado.
 
----
+### Instalação com Docker (Recomendado)
 
-## ✔ Georreferenciamento Corporativo
+Este método encapsula todos os serviços necessários (PHP, Nginx, PostgreSQL, Redis) em contêineres.
 
-Tecnologias:
+> **Pré-requisitos:** Git, Docker e Docker Compose.
 
-```text
-PostGIS
-Leaflet
-OpenLayers
-GeoServer
-OpenStreetMap
-```
+Para instruções detalhadas, siga o manual de instalação com Docker:
 
-Funcionalidades:
+➡️ **Manual de Instalação com Docker**
 
-* Licenças georreferenciadas
-* Fiscalizações em mapa
-* Denúncias georreferenciadas
-* Áreas embargadas
-* Camadas ambientais
+### Instalação Manual
+
+Se você prefere configurar o ambiente localmente sem o Docker, ou está em um ambiente que não o suporta, siga o guia de instalação manual.
+
+> **Pré-requisitos:** Git, PHP 8.3+, Composer, PostgreSQL 14+ (com PostGIS), Node.js.
+
+➡️ **Manual de Instalação Manual**
 
 ---
 
-# 🛰️ Central de Geointeligência
+## 💻 Ambiente de Desenvolvimento
 
-## Integrações
+Este projeto está configurado para oferecer uma ótima experiência de desenvolvimento no **Visual Studio Code**.
 
-### Monitoramento Ambiental
+### Extensões Recomendadas
 
-* INPE
-* MapBiomas
-* Sentinel
-* Landsat
+Ao abrir o projeto no VS Code, você receberá uma notificação para instalar as extensões recomendadas, que incluem ferramentas para PHP, Laravel, Docker, Livewire e muito mais. A lista completa está no arquivo `.vscode/extensions.json`.
 
-### Recursos Hídricos
+### Configurações do Workspace
 
-* Nascentes
-* Rios
-* Lagos
-* APPs
-
-### Cadastro Ambiental
-
-* CAR
-* SICAR
-* Cadastro Municipal
+O arquivo `.vscode/settings.json` padroniza algumas configurações, como o uso do `Git Bash` como terminal padrão no Windows, para garantir a compatibilidade dos scripts do projeto.
 
 ---
 
-# 🔥 Monitoramento de Queimadas
+## 🤝 Como Contribuir
 
-Integrações:
+Agradecemos o interesse em contribuir com o SEMARH Fiscaliza! Para garantir um processo de contribuição tranquilo e padronizado, pedimos que você leia nosso guia de contribuição.
 
-* INPE Queimadas
-* NASA FIRMS
-
-Recursos:
-
-* Alertas automáticos
-* Histórico de ocorrências
-* Dashboard de calor
-* Relatórios automáticos
+➡️ **Acessar o Guia de Contribuição (`CONTRIBUTING.md`)**
 
 ---
 
-# 🚁 Monitoramento por Drone
+## 📄 Licença
 
-Suporte para:
+Este projeto é distribuído sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-* DJI
-* Autel
-* Pix4D
-
-Recursos:
-
-* Upload de ortomosaicos
-* Modelos 3D
-* Fotografias aéreas
-* Comparação temporal
+_(Nota: Um arquivo `LICENSE` deve ser adicionado ao projeto.)_
 
 ---
 
-# 🤖 Inteligência Artificial Ambiental
-
-## IA Analista
-
-Capaz de:
-
-* Analisar documentos
-* Identificar pendências
-* Detectar inconsistências
-* Gerar pareceres preliminares
-* Auxiliar análises técnicas
-
----
-
-## IA Fiscal
-
-Capaz de:
-
-* Sugerir enquadramentos legais
-* Calcular multas automaticamente
-* Detectar reincidências
-* Sugerir medidas administrativas
-
----
-
-## IA Jurídica
-
-Baseada em:
-
-* Lei Complementar 140/2011
-* Decreto 6.514/2008
-* Lei 9.605/1998
-* Resoluções CONAMA
-* Legislação Municipal
-
-Capacidades:
-
-* Sugestão de fundamentação legal
-* Apoio a julgamentos administrativos
-* Minutas automáticas
-
----
-
-# ⚖️ Fluxo de Licenciamento
-
-## Licença Prévia (LP)
-
-### Requisitos
-
-* Viabilidade locacional
-* Memorial descritivo
-* Documentação básica
-
-### Resultado
-
-Emissão da LP
-
----
-
-## Licença de Instalação (LI)
-
-### Requisitos
-
-* LP válida
-* Projetos ambientais
-* Sistemas de controle ambiental
-
-### Resultado
-
-Emissão da LI
-
----
-
-## Licença de Operação (LO)
-
-### Requisitos
-
-* LI válida
-* Vistoria técnica
-* Comprovação de implantação
-
-### Resultado
-
-Emissão da LO
-
----
-
-# 📄 Gestão Documental Inteligente
-
-## Geração Automática
-
-* Licenças
-* Pareceres
-* Relatórios
-* Notificações
-* Autos de infração
-* Embargos
-* Interdições
-* Termos de apreensão
-* TACs
-
-Todos os documentos são gerados automaticamente através de modelos parametrizados.
-
----
-
-# ✍️ Assinatura Digital
-
-Suporte para:
-
-* ICP-Brasil A1
-* GOV.BR
-
-Benefícios:
-
-* Integridade
-* Autenticidade
-* Não repúdio
-* Validade jurídica
-
----
-
-# 🔐 Blockchain de Auditoria
-
-Todas as ações realizadas no sistema geram registros imutáveis.
-
-Registro de:
-
-* Usuário
-* Data
-* Hora
-* Operação
-* IP
-* Hash criptográfico
-
-Impossibilitando alterações indevidas após emissão dos documentos.
-
----
-
-# 📱 Aplicativo Mobile
-
-## Fiscalização em Campo
-
-Funcionalidades:
-
-* Operação offline
-* GPS integrado
-* Fotografias georreferenciadas
-* Assinatura digital
-* Sincronização automática
-
-Compatível com:
-
-* Android
-* iOS
-
----
-
-# 🌐 Portal do Cidadão
-
-Serviços Digitais:
-
-* Solicitação de licenças
-* Consulta processual
-* Emissão de taxas
-* Protocolos online
-* Acompanhamento de condicionantes
-* Denúncias ambientais
-
-Disponível 24 horas por dia.
-
----
-
-# 💬 Chatbot Ambiental
-
-Atendimento automatizado utilizando IA.
-
-Capaz de responder:
-
-* Como solicitar licença?
-* Quais documentos são necessários?
-* Como registrar denúncia?
-* Como consultar processo?
-
----
-
-# 📊 Business Intelligence
-
-## Painel Executivo
-
-Indicadores em tempo real:
-
-### Licenciamento
-
-* Processos ativos
-* Processos concluídos
-* Tempo médio de análise
-
-### Fiscalização
-
-* Vistorias realizadas
-* Autos emitidos
-* Embargos ativos
-
-### Arrecadação
-
-* Taxas
-* Multas
-* Receitas ambientais
-
-### Sustentabilidade
-
-* Áreas recuperadas
-* Áreas protegidas
-* Indicadores ESG
-
----
-
-# 🌳 ESG Municipal
-
-Monitoramento de:
-
-* Arborização urbana
-* Resíduos sólidos
-* Emissões de carbono
-* Recuperação ambiental
-* Sustentabilidade municipal
-
----
-
-# 🏛️ Integrações Governamentais
-
-## Federal
-
-* GOV.BR
-* Receita Federal
-* IBAMA
-* INPE
-* MapBiomas
-
-## Estadual
-
-* Órgão Ambiental Estadual
-* Defesa Civil
-* Corpo de Bombeiros
-
-## Municipal
-
-* Tributação
-* Obras
-* Vigilância Sanitária
-* Procuradoria
-
----
-
-# 🔒 Segurança
-
-## Implementações
-
-* Argon2ID
-* CSRF Protection
-* MFA (Autenticação em Dois Fatores)
-* Criptografia AES-256
-* Controle de Sessão
-* Logs de Auditoria
-* Backup Automático
-
----
-
-# 🏗️ Arquitetura Tecnológica
-
-## Backend
-
-```text
-PHP 8.3
-Laravel 12
-Laravel Sanctum
-Laravel Queue
-Laravel Scheduler
-Laravel Horizon
-```
-
-## Banco de Dados
-
-```text
-PostgreSQL 16
-PostGIS 3.x
-Redis
-```
-
-## Frontend
-
-```text
-Blade
-Bootstrap 5
-Alpine.js
-Livewire
-JavaScript ES6
-```
-
-## GIS
-
-```text
-Leaflet
-GeoServer
-PostGIS
-OpenLayers
-```
-
----
-
-# 📦 Instalação
-
-```bash
-git clone https://github.com/marcio-dev-fullstack/SEMARH-DESKTOP.git
-
-cd SEMARH-DESKTOP
-
-composer install
-
-cp .env.example .env
-
-php artisan key:generate
-
-php artisan migrate
-
-php artisan db:seed
-
-php artisan storage:link
-
-php artisan serve
-```
-
----
-
-# 🛣️ Roadmap
-
-## Versão 1.0
-
-* Licenciamento Digital
-* Fiscalização Digital
-* GIS Corporativo
-* BI Executivo
-
-## Versão 2.0
-
-* IA Ambiental
-* IA Jurídica
-* IA Fiscal
-
-## Versão 3.0
-
-* Monitoramento Satelital
-* Drones
-* Visão Computacional
-
-## Versão 4.0
-
-* Blockchain Governamental
-* Smart Cities
-* Digital Twin Ambiental
-
----
-
-# 🏅 Benefícios Esperados
-
-* Redução de até 95% do uso de papel
-* Redução de até 70% do tempo de tramitação
-* Aumento da transparência pública
-* Segurança jurídica dos atos administrativos
-* Controle territorial inteligente
-* Gestão ambiental baseada em dados
-
----
-
-## 👨‍💻 Arquiteto de Solução e Desenvolvedor Líder
-
-**Márcio Rodrigues de Oliveira**
-
-* Desenvolvedor Full Stack
-* cda.marcio@gmail.com
-
----
-
-# © Direitos Autorais
-
-**SEMARH Fiscaliza®** é um software proprietário.
-
-Todos os direitos de propriedade intelectual, código-fonte, arquitetura, documentação, identidade visual, banco de dados, modelos de documentos, fluxos de negócio e demais componentes do sistema são protegidos pela legislação brasileira de direitos autorais e propriedade intelectual.
-
-### Titularidade
-
-**RAZGO TECNOLOGIA LTDA**
-
-Detentora exclusiva dos direitos autorais, patrimoniais e comerciais do sistema **SEMARH Fiscaliza®**.
-
-### Proteção Legal
-
-Este software está protegido pelas seguintes normas:
-
-* Lei nº 9.609/1998 (Lei do Software)
-* Lei nº 9.610/1998 (Lei de Direitos Autorais)
-* Marco Civil da Internet (Lei nº 12.965/2014)
-* Lei Geral de Proteção de Dados – LGPD (Lei nº 13.709/2018)
-
-### Restrições
-
-É expressamente proibido:
-
-* Copiar total ou parcialmente o código-fonte;
-* Modificar ou criar versões derivadas sem autorização formal;
-* Comercializar, sublicenciar ou redistribuir o sistema;
-* Remover créditos ou identificações de autoria;
-* Realizar engenharia reversa, descompilação ou desmontagem do software sem autorização legal.
-
-### Licenciamento
-
-O uso do sistema depende de contrato ou autorização formal emitida pela **RAZGO TECNOLOGIA LTDA**, observando as condições estabelecidas entre as partes.
-
-### Contato Comercial
-
-**RAZGO TECNOLOGIA LTDA**
-
-(62) 99646-6033
-
-Soluções Inteligentes para Gestão Pública, Geotecnologias, Inteligência Artificial e Transformação Digital.
-
----
-
-**© 2026 RAZGO TECNOLOGIA LTDA. Todos os direitos reservados.**
-
-**SEMARH Fiscaliza®** é uma marca e plataforma tecnológica desenvolvida e mantida pela **RAZGO TECNOLOGIA LTDA**.
+> Este projeto é um protótipo e um portfólio de desenvolvimento. A implementação de algumas funcionalidades, como a integração real com Blockchain e APIs governamentais, é simulada.

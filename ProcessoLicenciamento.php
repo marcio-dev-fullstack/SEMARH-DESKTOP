@@ -2,48 +2,38 @@
 
 namespace App\Models;
 
-use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProcessoLicenciamento extends Model
 {
-    use HasFactory, Auditable;
+    use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'processos_licenciamento';
 
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+    protected $fillable = [
+        'cidadao_id',
+        'tipo_licenca',
+        'status',
+        'data_solicitacao',
+        'geometria',
+    ];
 
-    public function analista(): BelongsTo
+    /**
+     * O processo pertence a um cidadão (usuário).
+     */
+    public function cidadao(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'analista_id');
+        return $this->belongsTo(User::class, 'cidadao_id');
     }
 
     /**
-     * Define a relação com os documentos do processo.
+     * O processo pode gerar uma licença.
      */
-    public function documentos(): HasMany
+    public function licenca(): HasOne
     {
-        // Assumindo que teremos um model 'ProcessoDocumento'
-        return $this->hasMany(ProcessoDocumento::class);
-    }
-
-    public function historico(): HasMany
-    {
-        // Os logs de auditoria já são registrados pelo trait Auditable.
-        // Esta relação pode ser usada para comentários ou eventos manuais.
-        return $this->hasMany(AuditLog::class, 'auditable_id')->where('auditable_type', self::class);
+        return $this->hasOne(Licenca::class);
     }
 }

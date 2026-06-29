@@ -1,0 +1,83 @@
+# Nome do Workflow
+name: Run PHPUnit Tests
+
+# --- Gatilhos (Triggers) ---
+# Este workflow é acionado a cada push em um pull request direcionado à branch 'main'.
+on:
+  pull_request:
+    branches:
+      - main
+
+# Jobs
+jobs:
+  test:
+    name: Run PHPUnit Tests
+    runs-on: ubuntu-latest
+
+    # Inicia um contêiner de serviço com o banco de dados PostGIS.
+    # Os testes serão executados contra este banco de dados temporário.
+    services:
+      db:
+        image: postgis/postgis:16-3.4-alpine
+        # Variáveis de ambiente para o banco de dados de teste.
+        env:
+          POSTGRES_DB: testing
+          POSTGRES_USER: sail
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # Opções para garantir que o banco de dados esteja pronto antes dos testes começarem.
+        options: >-
+          --health-cmd "pg_isready -U sail -d testing"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # 1. Faz o checkout do código do repositório.
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+
+      # 2. Configura o ambiente PHP com a versão e extensões corretas.
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo, pdo_pgsql, bcmath, pcntl, zip, gd # Extensões do seu Dockerfile
+          tools: composer:v2
+
+      # 3. Instala dependências de sistema para a extensão pgsql.
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libpq-dev
+
+      # 4. Configura o cache para as dependências do Composer.
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      # 5. Prepara o arquivo .env para o ambiente de teste.
+      - name: Configure environment file
+        run: |
+          cp .env.example .env
+          echo "DB_CONNECTION=pgsql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_DATABASE=testing" >> .env
+          echo "DB_USERNAME=sail" >> .env
+          echo "DB_PASSWORD=password" >> .env
+
+      # 6. Instala as dependências do Composer.
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      # 7. Gera a chave da aplicação.
+      - name: Generate application key
+        run: php artisan key:generate
+
+      # 8. Executa os testes com PHPUnit.
+      - name: Run PHPUnit tests
+        run: php artisan test

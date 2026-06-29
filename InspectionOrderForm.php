@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Complaint; // Presume que você tem um Model Complaint
+use App\Models\User;      // Presume que você tem um Model User
+
 use Livewire\Component;
 use Livewire\Attributes\Rule;
 
@@ -27,26 +30,20 @@ class InspectionOrderForm extends Component
      */
     public function mount($complaintId)
     {
-        // Placeholder: Carrega os dados da denúncia
-        $allComplaints = collect([
-            ['id' => 1, 'protocol' => 'DEN-2026-001', 'location' => 'Rua das Flores, próximo ao córrego', 'description' => 'Despejo irregular de resíduos no córrego, ocorrendo principalmente à noite.'],
-            ['id' => 2, 'protocol' => 'DEN-2026-002', 'location' => 'Av. Brasil, esquina com a Rua 10', 'description' => 'Fumaça preta saindo da chaminé de uma pequena fábrica, com forte odor químico.'],
-            ['id' => 3, 'protocol' => 'DEN-2026-003', 'location' => 'Fazenda Boa Esperança, zona rural', 'description' => 'Suspeita de desmatamento ilegal em área de preservação permanente.'],
-        ]);
-        $this->complaint = $allComplaints->firstWhere('id', (int) $complaintId);
+        // Busca a denúncia real do banco de dados
+        $this->complaint = Complaint::findOrFail($complaintId);
 
         // Pré-preenche o formulário com dados da denúncia
         if ($this->complaint) {
-            $this->relatedProtocol = $this->complaint['protocol'];
-            $this->objectives = "Verificar a denúncia de '{$this->complaint['description']}' na localização '{$this->complaint['location']}'.";
+            $this->relatedProtocol = $this->complaint->protocol;
+            $this->objectives = "Verificar a denúncia de '{$this->complaint->description}' na localização '{$this->complaint->location}'.";
         }
 
-        // Placeholder: Carrega a lista de agentes fiscais
-        $this->agents = collect([
-            ['id' => 1, 'name' => 'Agente Fiscal 001'],
-            ['id' => 2, 'name' => 'Agente Fiscal 002'],
-            ['id' => 3, 'name' => 'Agente Fiscal 003'],
-        ]);
+        // Busca os agentes fiscais reais do banco de dados
+        // Supondo que agentes tenham uma role específica ou um campo 'is_agent'
+        $this->agents = User::where('role', 'Agente Fiscal')
+                            ->orWhere('role', 'Agente') // Adicionando flexibilidade
+                            ->get(['id', 'name']);
     }
 
     /**

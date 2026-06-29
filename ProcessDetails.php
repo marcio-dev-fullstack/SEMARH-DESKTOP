@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Actions\Processes\AddHistoryEntryAction;
 use App\Models\ProcessoLicenciamento;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -70,20 +71,14 @@ class ProcessDetails extends Component
     /**
      * Adiciona um novo registro ao histórico do processo.
      */
-    public function addHistoryEntry()
+    public function addHistoryEntry(AddHistoryEntryAction $addHistoryAction)
     {
         $this->validateOnly('newHistoryEntry');
 
-        // Cria um registro de auditoria manual (comentário)
-        $this->process->historico()->create([
-            'user_id' => Auth::id(),
-            'action' => 'comment',
-            'new_values' => ['comment' => $this->newHistoryEntry],
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent(),
-        ]);
+        // Delega a lógica para a classe de Ação
+        $addHistoryAction->execute($this->process, $this->newHistoryEntry);
         
-        $this->process->refresh(); // Recarrega o processo para exibir o novo histórico
+        $this->process->load('historico.user'); // Recarrega apenas a relação de histórico
         $this->reset('newHistoryEntry');
         $this->historyMessage = 'Registro de histórico adicionado com sucesso!';
     }
@@ -104,7 +99,7 @@ class ProcessDetails extends Component
             'user_id' => Auth::id(),
         ]);
 
-        $this->process->refresh(); // Recarrega o processo para exibir o novo documento
+        $this->process->load('documentos'); // Recarrega apenas a relação de documentos
         $this->reset('newDocument');
         $this->documentMessage = 'Documento enviado com sucesso!';
     }

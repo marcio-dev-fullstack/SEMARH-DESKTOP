@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Serviço da Aplicação (Laravel + Nginx + PHP-FPM)
@@ -9,6 +9,7 @@ services:
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
+    image: semarh-desktop:latest
     container_name: semarh-app
     restart: unless-stopped
     ports:
