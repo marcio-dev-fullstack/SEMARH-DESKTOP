@@ -14,8 +14,12 @@ RUN apk add --no-cache \
     postgresql-dev \
     gd-dev \
     freetype-dev \
+    postgresql-libs \
     libjpeg-turbo-dev \
     libpng-dev
+
+# Instala o Xdebug (será habilitado apenas em desenvolvimento)
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 # Configura e instala extensões do PHP requeridas pelo Laravel
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -29,11 +33,12 @@ WORKDIR /var/www/html
 # Cria o usuário laravel para evitar problemas de permissão com o Composer
 RUN addgroup -g 1000 laravel && adduser -u 1000 -G laravel -s /bin/sh -D laravel
 
-# Copia apenas o arquivo de configuração de dependências
-COPY --chown=laravel:laravel composer.json ./
+# Copia os arquivos de dependência primeiro para aproveitar o cache do Docker
+COPY --chown=laravel:laravel composer.json composer.lock ./
 
-# Instala as dependências do Composer sem rodar scripts ou plugins que dependam de arquivos ausentes
-RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader --no-plugins --no-scripts
+# Instala as dependências. Esta camada será cacheada se composer.lock não mudar.
+RUN composer install --no-interaction --no-progress --no-dev --optimize-autoloader --no-scripts --no-plugins --ignore-platform-reqs \
+    && composer clear-cache -s
 
 # Copia o restante dos arquivos da aplicação
 COPY --chown=laravel:laravel . .
@@ -42,28 +47,23 @@ COPY --chown=laravel:laravel . .
 # ESTÁGIO 2: Produção (Final)
 # ==========================================
 FROM php:8.3-fpm-alpine AS production
+WORKDIR /var/www/html
 
-# Instala apenas as bibliotecas de execução necessárias no ambiente final (Nginx, Supervisor e bibliotecas base do Postgres)
-RUN apk add --no-cache \
-    nginx \
-    supervisor \
-    postgresql-libs \
-    libzip \
-    libpng \
-    libjpeg-turbo \
-    freetype
+# Instala apenas as dependências de execução, limpa o cache e cria o usuário em uma única camada
+RUN apk add --no-cache nginx supervisor postgresql-libs libzip libpng libjpeg-turbo freetype \
+    && rm -rf /var/cache/apk/* \
+    && addgroup -g 101 -S www-data-group || true \
+    && adduser -u 101 -S -G www-data-group www-data || true
 
 # Copia as extensões PHP já compiladas do estágio 'builder' (Evita o erro de falta do libpq-fe.h)
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
-WORKDIR /var/www/html
-
-# Cria o usuário www-data de execução de forma segura (se não existir no sistema Alpine)
-RUN addgroup -g 101 -S www-data-group || true \
-    && adduser -u 101 -S -G www-data-group www-data || true
+# Copia a configuração personalizada do Xdebug para habilitar a depuração remota
+COPY docker/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Copia os arquivos do projeto vindos do construtor com as permissões corretas
+# Graças ao .dockerignore, esta cópia não inclui mais arquivos de desenvolvimento.
 COPY --from=builder --chown=www-data:www-data /var/www/html .
 
 # Copia as configurações do Nginx e Supervisor de forma condicional se existirem, ou cria estruturas básicas

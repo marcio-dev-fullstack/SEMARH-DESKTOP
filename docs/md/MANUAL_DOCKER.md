@@ -15,9 +15,9 @@ Ele encapsula a aplicação e todos os seus serviços (banco de dados, servidor 
 
 ## 🚀 Passo a Passo
 
-### Passo 1: Clonar o Repositório
+### Passo 1: Clonar o Projeto
 
-Abra seu terminal (ou PowerShell no Windows) e execute o comando abaixo para baixar o projeto.
+Abra seu terminal e clone o repositório do projeto para a sua máquina.
 
 ```bash
 git clone https://github.com/marcio-dev-fullstack/SEMARH-DESKTOP.git

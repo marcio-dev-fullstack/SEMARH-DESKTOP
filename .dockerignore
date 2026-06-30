@@ -1,0 +1,23 @@
+# Histórico do Git
+.git
+.github
+
+# Arquivos de configuração local e segredos
+.env
+.env.backup
+
+# Dependências de desenvolvimento (Node.js)
+node_modules
+
+# Arquivos de log e temporários do Laravel
+/storage/logs/*.log
+/storage/framework/sessions/*
+/storage/framework/cache/data/*
+
+# Documentação e scripts auxiliares
+*.md
+*.sh
+*.ps1
+docker/
+tests/
+.vscode/

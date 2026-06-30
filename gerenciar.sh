@@ -17,9 +17,9 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # Sem cor
 
-echo -e "${BLUE}=== SEMARH DESKTOP - Painel de Gerenciamento ===${NC}"
-
-exibir_menu() {
+show_menu() {
+    clear
+    echo -e "${BLUE}=== SEMARH DESKTOP - Painel de Gerenciamento ===${NC}"
     echo ""
     echo "1) Iniciar Ambiente (Docker Up)"
     echo "2) Parar Ambiente (Docker Down)"
@@ -27,14 +27,14 @@ exibir_menu() {
     echo "4) Ver Logs da Aplicação"
     echo "5) Acessar Terminal do Container (Bash)"
     echo "6) Rodar Migrations (Artisan Migrate)"
-    echo "7) Sair"
+    echo "q) Sair"
     echo ""
-    echo -n "Escolha uma opção: "
 }
 
-while true; do
-    exibir_menu
-    read opcao
+while true; do # Loop infinito
+    show_menu
+    read -p "Escolha uma opção: " opcao
+
     case $opcao in
         1)
             echo -e "${GREEN}Iniciando os contêineres...${NC}"
@@ -61,7 +61,7 @@ while true; do
             echo -e "${BLUE}Rodando as migrações do banco de dados...${NC}"
             docker-compose exec app php artisan migrate || docker-compose exec web php artisan migrate
             ;;
-        7)
+        [qQ])
             echo -e "${GREEN}Saindo...${NC}"
             break
             ;;
@@ -69,4 +69,5 @@ while true; do
             echo -e "${RED}Opção inválida! Tente novamente.${NC}"
             ;;
     esac
+    read -p "Pressione [Enter] para continuar..."
 done

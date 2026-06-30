@@ -6,7 +6,7 @@ Para garantir um ambiente de desenvolvimento colaborativo, organizado e de alta 
 
 ## Código de Conduta
 
-Este projeto e todos que participam dele são regidos pelo nosso [Código de Conduta](CODE_OF_CONDUCT.md). Ao participar, você concorda em seguir seus termos. _(Nota: O arquivo `CODE_OF_CONDUCT.md` será adicionado em breve)_.
+Este projeto e todos que participam dele são regidos pelo nosso Código de Conduta. Ao participar, você concorda em seguir seus termos.
 
 ## 💬 Como Contribuir
 

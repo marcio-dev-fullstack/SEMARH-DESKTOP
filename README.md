@@ -93,8 +93,6 @@ Agradecemos o interesse em contribuir com o SEMARH Fiscaliza! Para garantir um p
 
 Este projeto é distribuído sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-_(Nota: Um arquivo `LICENSE` deve ser adicionado ao projeto.)_
-
 ---
 
 > Este projeto é um protótipo e um portfólio de desenvolvimento. A implementação de algumas funcionalidades, como a integração real com Blockchain e APIs governamentais, é simulada.
